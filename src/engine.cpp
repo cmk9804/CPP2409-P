@@ -149,3 +149,28 @@ void Engine::renderRockman(Rockman* rockman, Map* map) {
         printf("/]");
     }
 }
+
+/*
+void Engine::renderProjectiles(Rockman* rockman){
+    for(int i = 0; i < rockman->maxBullet; i++){
+        if(rockman->r_bullet[i]->isActive()){
+            rockman->r_bullet[i]
+        }
+    }
+}
+*/
+
+char getCharAtPosition(int x, int y) { 
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); 
+    CHAR_INFO ci; 
+    COORD coord = {0, 0}; 
+    SMALL_RECT rect = {x, y, x, y}; 
+    COORD bufferSize = {1, 1}; // 콘솔 화면 버퍼에서 특정 좌표의 문자 읽기 
+
+    if (!ReadConsoleOutput(hConsole, &ci, bufferSize, coord, &rect)) {
+        std::cerr << "Error reading console output\n"; 
+        return '\0'; 
+    } 
+
+    return ci.Char.AsciiChar; 
+}

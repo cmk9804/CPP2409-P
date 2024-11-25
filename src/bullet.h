@@ -1,11 +1,17 @@
 class Bullet {
-private:
-    int posX;
-    int posY;
+protected:
+    int b_posX;
+    int b_posY;
 
+
+    bool active;
 public:
     Bullet();
-    bool activate();
-    void deactivate();
-    
+    void setActive(bool flag);
+    void initBullet(int x, int y, bool facing);
+    bool isActive();
+    bool B_Update();
+
+    int getPosX();
+    int getPosY();
 };

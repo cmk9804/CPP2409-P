@@ -31,4 +31,5 @@ class Engine
         void updateScreenOffset(Map* map, int xPos);
 
         void renderRockman(Rockman* rockman, Map* map);
+        void renderProjectiles(Rockman* rockman);
 };

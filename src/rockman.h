@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "map.h"
 #include "controls.h"
+#include "bullet.h"
 
 class Rockman {
 private:
@@ -20,6 +21,8 @@ private:
     bool isInvincible;
 public:
     int previousXpos;
+    static int const maxBullet = 3;
+    Bullet* r_bullet[maxBullet];
 
     void R_Init();
     void R_Update(Controls* control, Map* map);

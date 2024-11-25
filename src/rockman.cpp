@@ -8,6 +8,10 @@ void Rockman::R_Init(){
 
     xVel = 0, yVel = 0;
 
+    for(int i = 0; i < maxBullet; i++){
+        r_bullet[i] = new Bullet();
+    }
+
     onGround = true;
     facingRight = true;
     isInvincible = false;
