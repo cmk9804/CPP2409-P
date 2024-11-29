@@ -24,11 +24,11 @@ bool Engine::Render()
 
         renderRockman(rockman, map);
 
-        gotoxy(15, 18);
-        //printf("xPos: %d, yPos: %d, xVel: %f, yVel: %f, prevXpos: %d, screenOffset: %d", rockman->getXPos(), rockman->getYPos(), rockman->getXVel(), rockman->getYVel(), rockman->previousXpos, map->screenOffsetX);
+        //gotoxy(15, 18);
+        //printf("xVel: %f, yVel: %f", rockman->getXVel(), rockman->getYVel());
         
         end = clock();
-        std::cout << "FPS: " << Frames << " : " << end - start << "ms" ;
+        //std::cout << "FPS: " << Frames << " : " << end - start << "ms" ;
         Frames++;
     }
 

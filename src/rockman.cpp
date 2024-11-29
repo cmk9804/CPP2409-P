@@ -37,11 +37,11 @@ void Rockman::R_Update(Controls* control, Map* map){
         }
     }
     
-    xPos += xVel;
-
     if(xVel != 0 && XCollision(map, control)){ // 충돌 시 xVel = 0 설정
         xVel = 0;
     }
+    
+    xPos += xVel;
 
     if(control->jumpPressed && onGround){
         yVel -= jumpforce;
@@ -53,19 +53,20 @@ void Rockman::R_Update(Controls* control, Map* map){
         yVel = 0;
     }
 
-    yPos += yVel;
-
     if(yVel > 0) {
-        onGround = YCollision(map, control);
+        onGround = YCollisionDown(map);
         if(onGround) {
             yVel = 0;
         }
     }else if (yVel < 0) {
-        if(YCollision(map, control)){
+        if(YCollisionUp(map)){
             yVel = 0;
         }
         onGround = false;
     }
+
+    yPos += yVel;
+
 
     if(control->actionPressed && facingRight){
         
@@ -82,13 +83,11 @@ bool Rockman::XCollision(Map* map, Controls* control){
         if(  control->leftDown 
         && ((map->test_room[yPos][xPos - 1] == 1)
         ||   xPos - 1 <= 0)){
-            std::cout << "Left Wall Collision Detected\n";
             return true;
         }
         else if(control->rightDown 
             &&((map->test_room[yPos][xPos + 2] == 1)
             ||  (xPos + 2) >= (map->ScreenWidth * map->test_room_numberofScreen))){
-            std::cout << "Right Wall Collision Detected\n";
             return true;
         }
     }
@@ -96,11 +95,18 @@ bool Rockman::XCollision(Map* map, Controls* control){
     return false;
 }
 
-bool Rockman::YCollision(Map* map, Controls* control){
+bool Rockman::YCollisionUp(Map* map){
+    if(map->In_testroom){
+        if((map->test_room[yPos - 1][xPos] == 1) || map->test_room[yPos - 1][xPos + 1] == 1){
+            return true;
+        }
+    }
+
+    return false;
+}
+bool Rockman::YCollisionDown(Map* map){
     if(map->In_testroom){
         if((map->test_room[yPos + 1][xPos] == 1) || map->test_room[yPos + 1][xPos + 1] == 1){
-            return true;
-        }else if((map->test_room[yPos - 2][xPos] == 1) || map->test_room[yPos - 2][xPos + 1] == 1){
             return true;
         }
     }

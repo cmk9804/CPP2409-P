@@ -28,7 +28,8 @@ public:
     void R_Update(Controls* control, Map* map);
 
     bool XCollision(Map* map, Controls* control);
-    bool YCollision(Map* map, Controls* control);
+    bool YCollisionUp(Map* map);
+    bool YCollisionDown(Map* map);
 
     void setXPos(int x);
     void setYPos(int y);
