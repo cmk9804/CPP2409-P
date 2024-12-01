@@ -4,7 +4,7 @@ Rockman::~Rockman() {
     for (int i = 0; i < maxBullet; ++i) { 
         delete r_bullet[i]; 
     } 
-        delete[] r_bullet; 
+        //delete[] r_bullet; 
     }
 
 void Rockman::R_Init(){
@@ -30,13 +30,11 @@ void Rockman::R_Init(){
 
 void Rockman::R_Update(Controls* control, Map* map){
     int screenXpos = calcScreenXpos(map);
-    if(control->actionPressed && bulletDelayCount == 0){                 //갈수록 총알을 발사할 수 있는 개수가 줄어듬; 고쳐야함
+    if(control->actionPressed && bulletDelayCount == 0){                
         if(bulletCount < maxBullet){
             if(facingRight){
-                //r_bullet[currentBullet++]->initBullet(screenXpos+2, xPos+2, yPos, facingRight);
                 r_bullet[currentBullet++]->initBullet(screenXpos+2, yPos, facingRight);
             }else{
-                //r_bullet[currentBullet++]->initBullet(screenXpos-1, xPos-1, yPos, facingRight);
                 r_bullet[currentBullet++]->initBullet(screenXpos-1, yPos, facingRight);
             }
             bulletCount++;

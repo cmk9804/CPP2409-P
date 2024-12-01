@@ -1,7 +1,6 @@
 #include "engine.h"
 
 void switchControls(int VirtualKey, bool &key);
-char getCharAtPositin(int x, int y);
 
 bool Engine::Render()
 {
@@ -19,18 +18,22 @@ bool Engine::Render()
         }
 
         rockman->R_Update(buttons, map);
+        enemy.Update(rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        //enemies[0]->Update(rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
 
         updateScreenOffset(map, rockman->getXPos());
         renderTestRoom(map);
 
         renderRockman(rockman, map);
+        renderEnemies();
         renderProjectiles(rockman);
 
         gotoxy(15, 18);
-        printf("currentBullet: %d, bulletCount: %d", rockman->currentBullet, rockman->bulletCount);
+        printf("gremlinCount: %d, totalGremlins: %d, currentGremlin: %d", enemy.gremlinCount, enemy.totalGremlins, enemy.currentGremlin);
+        //printf("currentBullet: %d, bulletCount: %d", rockman->currentBullet, rockman->bulletCount);
         //printf("xVel: %f, yVel: %f", rockman->getXVel(), rockman->getYVel());
         
-        end = clock();
+        //end = clock();
         //std::cout << "FPS: " << Frames << " : " << end - start << "ms" ;
         Frames++;
     }
@@ -64,10 +67,11 @@ void Engine::E_Init()
 
     SetConsoleTitle(TEXT("Rockman_Airman"));
 
-    FPS = 30.0;
+    FPS = 24.0;
     
     buttons = new Controls;
     rockman = new Rockman();
+    //enemies[0] = std::make_unique<AirTikki>(34, 4); //, Pipi(22, 1)};
     map = new Map();
 
     rockman->R_Init();
@@ -113,6 +117,8 @@ void Engine::renderTestRoom(Map* map) {
                 switch (map->test_room[y][mapX]) {
                     case 0: printf(" "); break;
                     case 1: printf("░"); break;
+                    case 2: printf("/"); break;
+                    case 3: printf("\\"); break;
                 }
             }
         }
@@ -138,13 +144,7 @@ void Engine::updateScreenOffset(Map* map, int xPos) {                   //맵의
 void Engine::renderRockman(Rockman* rockman, Map* map) {                
     int mapWidth = map->ScreenWidth * map->test_room_numberofScreen;       //방마다 바뀌어야 함
     int renderX = rockman->getXPos() - map->screenOffsetX;
-    /*
-    if (rockman->getXPos() <= map->ScreenWidth / 2) {
-        renderX = rockman->getXPos();
-    } else if(rockman->getXPos() >= mapWidth - map->ScreenWidth / 2){   // 이건 필요 없을듯. 이미 screenoffset 함수에 정의되어 있음.
-        renderX = rockman->getXPos() - (mapWidth - map->ScreenWidth);
-    }
-    */
+    
     gotoxy(renderX, rockman->getYPos());
     if (rockman->getfacingRight()) {
         printf("[\\");
@@ -154,12 +154,23 @@ void Engine::renderRockman(Rockman* rockman, Map* map) {
 } 
 
 
-void Engine::renderProjectiles(Rockman* rockman){                   //현재는 록맨의 투사체만, 적 투사체를 그리는 것도 추가
+void Engine::renderProjectiles(Rockman* rockman){                   //현재는 록맨의 투사체만 그림, 적 투사체를 그리는 것도 추가
     for(int i = 0; i < rockman->maxBullet; i++){
         if(rockman->r_bullet[i]->f_isActive()){
-            //int b_posX_inMap = rockman->r_bullet[i]->getPosX() + map->screenOffsetX;
             gotoxy(rockman->r_bullet[i]->getPosX(), rockman->r_bullet[i]->getPosY());
             printf("o");
         }
     }
+}
+
+void Engine::renderEnemies(){                                       //테스트용. 스테이지 구현 할 때에는 수정해야함
+    /*
+    for(int i = 0; i < 2; i++){
+        //enemies[i].Render(map, COUT);
+    }
+    */
+
+   //enemies[0]->Render(map, COUT);
+
+   enemy.Render(map);
 }

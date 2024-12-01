@@ -1,13 +1,18 @@
 #include <time.h>
 #include <iostream>
 #include <Windows.h>
+#include <array>
+#include <memory>
 #include "rockman.h"
+#include "enemy.h"
 
 class Engine
 {
     private:
         Controls* buttons;
         Rockman* rockman;
+        //std::array<std::unique_ptr<Enemy>, 1> enemies;      //테스트용. 스테이지 구현 할 때에는 수정해야함
+        AirTikki enemy {34, 4};
         Map* map;
        
         HANDLE CIN = 0;
@@ -32,4 +37,5 @@ class Engine
 
         void renderRockman(Rockman* rockman, Map* map);
         void renderProjectiles(Rockman* rockman);
+        void renderEnemies();
 };
