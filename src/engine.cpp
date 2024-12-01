@@ -1,6 +1,7 @@
 #include "engine.h"
 
 void switchControls(int VirtualKey, bool &key);
+char getCharAtPositin(int x, int y);
 
 bool Engine::Render()
 {
@@ -23,8 +24,10 @@ bool Engine::Render()
         renderTestRoom(map);
 
         renderRockman(rockman, map);
+        renderProjectiles(rockman);
 
-        //gotoxy(15, 18);
+        gotoxy(15, 18);
+        printf("currentBullet: %d, bulletCount: %d", rockman->currentBullet, rockman->bulletCount);
         //printf("xVel: %f, yVel: %f", rockman->getXVel(), rockman->getYVel());
         
         end = clock();
@@ -109,22 +112,22 @@ void Engine::renderTestRoom(Map* map) {
                 gotoxy(x, y);  // 커서 위치 설정
                 switch (map->test_room[y][mapX]) {
                     case 0: printf(" "); break;
-                    case 1: printf("="); break;
+                    case 1: printf("░"); break;
                 }
             }
         }
     }
 }
 
-void Engine::updateScreenOffset(Map* map, int xPos) {
-    int dx = xPos - rockman->previousXpos;
+void Engine::updateScreenOffset(Map* map, int xPos) {                   //맵의 어떤 부분을 그려야하는지 정해주는 함수 
+    int dx = xPos - rockman->previousXpos;                              //스크린오프셋의 값에서부터 화면을 그리기 시작함
     int mapWidth = map->ScreenWidth * map->test_room_numberofScreen;
 
-    if (xPos < map->ScreenWidth / 2) {
+    if (xPos < map->ScreenWidth / 2) {                                  //록맨의 맵 상 좌표가 화면 넓이의 절반이면 0
         map->screenOffsetX = 0;
-    } else if (xPos > mapWidth - map->ScreenWidth / 2) {
+    } else if (xPos > mapWidth - map->ScreenWidth / 2) {                //록맨의 맵 상 좌표가 맵의 넓이 - 화면 넓이의 절반이면 맵의 넓이 - 화면 넓이
         map->screenOffsetX = mapWidth - map->ScreenWidth;
-    } else {
+    } else {                                                            //위의 두 가지 값의 사이라면 이전 틱과 현재 틱을 비교해 움직인 정도에 따라 값을 조정
         map->screenOffsetX += dx;
     }
 
@@ -132,45 +135,31 @@ void Engine::updateScreenOffset(Map* map, int xPos) {
 }
 
 
-void Engine::renderRockman(Rockman* rockman, Map* map) {
-    int mapWidth = map->ScreenWidth * map->test_room_numberofScreen;
+void Engine::renderRockman(Rockman* rockman, Map* map) {                
+    int mapWidth = map->ScreenWidth * map->test_room_numberofScreen;       //방마다 바뀌어야 함
     int renderX = rockman->getXPos() - map->screenOffsetX;
-
+    /*
     if (rockman->getXPos() <= map->ScreenWidth / 2) {
         renderX = rockman->getXPos();
-    } else if(rockman->getXPos() >= mapWidth - map->ScreenWidth / 2){
+    } else if(rockman->getXPos() >= mapWidth - map->ScreenWidth / 2){   // 이건 필요 없을듯. 이미 screenoffset 함수에 정의되어 있음.
         renderX = rockman->getXPos() - (mapWidth - map->ScreenWidth);
     }
-
+    */
     gotoxy(renderX, rockman->getYPos());
     if (rockman->getfacingRight()) {
         printf("[\\");
     } else {
         printf("/]");
     }
-}
+} 
 
-/*
-void Engine::renderProjectiles(Rockman* rockman){
+
+void Engine::renderProjectiles(Rockman* rockman){                   //현재는 록맨의 투사체만, 적 투사체를 그리는 것도 추가
     for(int i = 0; i < rockman->maxBullet; i++){
-        if(rockman->r_bullet[i]->isActive()){
-            rockman->r_bullet[i]
+        if(rockman->r_bullet[i]->f_isActive()){
+            //int b_posX_inMap = rockman->r_bullet[i]->getPosX() + map->screenOffsetX;
+            gotoxy(rockman->r_bullet[i]->getPosX(), rockman->r_bullet[i]->getPosY());
+            printf("o");
         }
     }
-}
-*/
-
-char getCharAtPosition(int x, int y) { 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); 
-    CHAR_INFO ci; 
-    COORD coord = {0, 0}; 
-    SMALL_RECT rect = {x, y, x, y}; 
-    COORD bufferSize = {1, 1}; // 콘솔 화면 버퍼에서 특정 좌표의 문자 읽기 
-
-    if (!ReadConsoleOutput(hConsole, &ci, bufferSize, coord, &rect)) {
-        std::cerr << "Error reading console output\n"; 
-        return '\0'; 
-    } 
-
-    return ci.Char.AsciiChar; 
 }

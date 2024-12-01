@@ -1,5 +1,12 @@
 #include "rockman.h"
 
+Rockman::~Rockman() { 
+    for (int i = 0; i < maxBullet; ++i) { 
+        delete r_bullet[i]; 
+    } 
+        delete[] r_bullet; 
+    }
+
 void Rockman::R_Init(){
     xPos = 15;
     yPos = 6;
@@ -12,13 +19,46 @@ void Rockman::R_Init(){
         r_bullet[i] = new Bullet();
     }
 
+    int currnetBullet = 0;              
+    int bulletCount = 0;
+    int bulletDelayCount = 0;
+
     onGround = true;
     facingRight = true;
     isInvincible = false;
 }
 
 void Rockman::R_Update(Controls* control, Map* map){
+    int screenXpos = calcScreenXpos(map);
+    if(control->actionPressed && bulletDelayCount == 0){                 //갈수록 총알을 발사할 수 있는 개수가 줄어듬; 고쳐야함
+        if(bulletCount < maxBullet){
+            if(facingRight){
+                //r_bullet[currentBullet++]->initBullet(screenXpos+2, xPos+2, yPos, facingRight);
+                r_bullet[currentBullet++]->initBullet(screenXpos+2, yPos, facingRight);
+            }else{
+                //r_bullet[currentBullet++]->initBullet(screenXpos-1, xPos-1, yPos, facingRight);
+                r_bullet[currentBullet++]->initBullet(screenXpos-1, yPos, facingRight);
+            }
+            bulletCount++;
+            bulletDelayCount = bulletDelay;
+        }
+        
+        if(currentBullet > 2){
+            currentBullet = 0;
+        }
+    }else{
+        if(tick % 30){
+            bulletCount = 0;
+        }
+    }
     
+    for(int i = 0; i < 3; i++){
+        r_bullet[i]->B_Update(map, &bulletCount, xPos);
+    }
+
+    if(bulletDelayCount > 0) bulletDelayCount--;
+
+
     if(xVel != 0 && !control->leftDown && !control->rightDown){
         if (xVel > 0){
             xVel = std::max<float>(xVel - acc, 0);
@@ -67,13 +107,7 @@ void Rockman::R_Update(Controls* control, Map* map){
 
     yPos += yVel;
 
-
-    if(control->actionPressed && facingRight){
-        
-    }
-    else if(control->actionPressed && !facingRight){
-        
-    }
+    tick++;
 }
 
 bool Rockman::XCollision(Map* map, Controls* control){
@@ -142,4 +176,17 @@ float Rockman::getYVel(){
 
 bool Rockman::getfacingRight(){
     return facingRight;
+}
+
+int Rockman::calcScreenXpos(Map* map){
+    int mapWidth = map->ScreenWidth * map->test_room_numberofScreen;       //방마다 바뀌어야 함
+    int screenXpos = xPos - map->screenOffsetX;                            //화면에서의 x좌표
+
+    if (xPos <= map->ScreenWidth / 2) {
+        screenXpos = xPos;
+    } else if(xPos >= mapWidth - map->ScreenWidth / 2){
+        screenXpos = xPos - (mapWidth - map->ScreenWidth);
+    }
+
+    return screenXpos;
 }
