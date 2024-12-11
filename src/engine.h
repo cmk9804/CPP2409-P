@@ -12,7 +12,12 @@ class Engine
         Controls* buttons;
         Rockman* rockman;
         //std::array<std::unique_ptr<Enemy>, 1> enemies;      //테스트용. 스테이지 구현 할 때에는 수정해야함
-        AirTikki enemy {34, 4};
+        AirTikki airTikki_1 {34, 4};
+        Pipi pipi_1 {44, 1};
+        //LightningLord lightningLord_1 {54, 2};
+        Scworm scworm_1{59, 6};
+        FanFriend fanfriend_1{54, 6};
+        
         Map* map;
        
         HANDLE CIN = 0;
@@ -20,7 +25,7 @@ class Engine
 
         bool Key_input();
     public:
-        double FPS;// = 30.0;
+        double FPS;
 
         bool Render();
         void Shutdown();

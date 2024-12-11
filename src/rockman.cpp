@@ -51,7 +51,7 @@ void Rockman::R_Update(Controls* control, Map* map){
     }
     
     for(int i = 0; i < 3; i++){
-        r_bullet[i]->B_Update(map, &bulletCount, xPos);
+        r_bullet[i]->B_Update(map, &bulletCount);
     }
 
     if(bulletDelayCount > 0) bulletDelayCount--;

@@ -18,8 +18,11 @@ bool Engine::Render()
         }
 
         rockman->R_Update(buttons, map);
-        enemy.Update(rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
-        //enemies[0]->Update(rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        airTikki_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        pipi_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        //lightningLord_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        scworm_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        fanfriend_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
 
         updateScreenOffset(map, rockman->getXPos());
         renderTestRoom(map);
@@ -28,10 +31,11 @@ bool Engine::Render()
         renderEnemies();
         renderProjectiles(rockman);
 
-        gotoxy(15, 18);
-        printf("gremlinCount: %d, totalGremlins: %d, currentGremlin: %d", enemy.gremlinCount, enemy.totalGremlins, enemy.currentGremlin);
+        //gotoxy(15, 18);
+        //printf("gremlinCount: %d, totalGremlins: %d, currentGremlin: %d", enemy.gremlinCount, enemy.totalGremlins, enemy.currentGremlin);
         //printf("currentBullet: %d, bulletCount: %d", rockman->currentBullet, rockman->bulletCount);
         //printf("xVel: %f, yVel: %f", rockman->getXVel(), rockman->getYVel());
+        //printf("bullet holding: %s, bullet activation: %s", pipi_1.getEgg()->holding? "true":"false", pipi_1.getEgg()->b_isActive? "true":"false");
         
         //end = clock();
         //std::cout << "FPS: " << Frames << " : " << end - start << "ms" ;
@@ -66,6 +70,7 @@ void Engine::E_Init()
     COUT = GetStdHandle(STD_OUTPUT_HANDLE);
 
     SetConsoleTitle(TEXT("Rockman_Airman"));
+    //system("mode con: cols=32 lines=16");
 
     FPS = 24.0;
     
@@ -107,6 +112,7 @@ void Engine::gotoxy(int x, int y)
   Pos.Y = y;
   SetConsoleCursorPosition(COUT, Pos);
 }
+
 
 void Engine::renderTestRoom(Map* map) {
     for (int y = 0; y < map->ScreenHeight; ++y) {
@@ -161,16 +167,26 @@ void Engine::renderProjectiles(Rockman* rockman){                   //현재는 
             printf("o");
         }
     }
+
+    if(pipi_1.getEgg()->f_isActive()){    //Pipi's Egg
+        gotoxy(pipi_1.getEgg()->getPosX(), pipi_1.getEgg()->getPosY());
+        printf("()");
+    }
+
+    /*
+    if(lightningLord_1.getLightning()->f_isActive()){
+        if(lightningLord_1.getLightning()->getPosY() >= 0 ){
+            gotoxy(lightningLord_1.getLightning()->getPosX(), lightningLord_1.getLightning()->getPosY());
+            printf("//");
+        }
+    }
+    */
 }
 
 void Engine::renderEnemies(){                                       //테스트용. 스테이지 구현 할 때에는 수정해야함
-    /*
-    for(int i = 0; i < 2; i++){
-        //enemies[i].Render(map, COUT);
-    }
-    */
-
-   //enemies[0]->Render(map, COUT);
-
-   enemy.Render(map);
+    airTikki_1.Render(map);
+    pipi_1.Render(map);
+    //lightningLord_1.Render(map);
+    scworm_1.Render(map);
+    fanfriend_1.Render(map);
 }
