@@ -68,7 +68,7 @@ PipiBullet::PipiBullet(int e_posX, int e_posY){
     holding = true;
 }
 
-void PipiBullet::B_Update(Map* map, int e_posX, int e_posY){      //direction == true 이면 오른쪽을 향하고 false이면 왼쪽을 향한다
+void PipiBullet::B_Update(Map* map, int e_posX, int e_posY){      
     if(b_isActive && holding){
         b_inMapPosX = e_posX;
     }

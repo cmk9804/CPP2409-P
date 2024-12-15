@@ -20,9 +20,9 @@ bool Engine::Render()
         rockman->R_Update(buttons, map);
         airTikki_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
         pipi_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
-        //lightningLord_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
-        scworm_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
-        fanfriend_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        lightningLord_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        //scworm_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
+        //fanfriend_1.Update(map, rockman->getXPos(), rockman->getYPos(), map->screenOffsetX);
 
         updateScreenOffset(map, rockman->getXPos());
         renderTestRoom(map);
@@ -186,7 +186,7 @@ void Engine::renderProjectiles(Rockman* rockman){                   //현재는 
 void Engine::renderEnemies(){                                       //테스트용. 스테이지 구현 할 때에는 수정해야함
     airTikki_1.Render(map);
     pipi_1.Render(map);
-    //lightningLord_1.Render(map);
+    lightningLord_1.Render(map);
     scworm_1.Render(map);
     fanfriend_1.Render(map);
 }

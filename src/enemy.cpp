@@ -303,7 +303,7 @@ LightningLord::LightningLord(int x, int y){
     isActive = false;
     isAlive = true;
 
-    lightning = new Lightning();
+    //lightning = new Lightning();
 }
 
 void LightningLord::Update(Map* map, int r_posX, int r_posY, int screenOffset){
@@ -341,6 +341,7 @@ void LightningLord::Update(Map* map, int r_posX, int r_posY, int screenOffset){
     */
 }
 
+/*
 void LightningLord::throwLightning(int r_posX, int r_posY){
     if(!lightning->f_isActive()){
         double dx = r_posX - e_posX;
@@ -360,7 +361,7 @@ void LightningLord::throwLightning(int r_posX, int r_posY){
 Lightning* LightningLord::getLightning(){
     return lightning;
 }
-
+*/
 void LightningLord::Render(Map* map) {
     if (isActive) {
         // 현재 위치와 이전 위치를 저장
@@ -451,6 +452,7 @@ void FanFriend::Render(Map* map){
     }
 }
 
+/*
 //----------------------------AirMan----------------------------
 Airman::Airman(int x, int y){
     e_hp = 28;           
@@ -463,7 +465,7 @@ Airman::Airman(int x, int y){
     isActive = true;
     isInvincible = false;
 }
-
+*/
 
 
 void gotoxy(int x, int y)

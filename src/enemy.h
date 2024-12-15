@@ -86,7 +86,7 @@ class LightningLord : public Enemy{
 private: 
     int e_attackDamage;
     const int e_attackDelay = 50;
-    Lightning* lightning;
+    //Lightning* lightning;
     bool isAlive;
 
     int radius;
@@ -119,7 +119,7 @@ public:
     void Update(Map* map, int r_posX, int r_posY, int screenOffset);
     void Render(Map* map);
 };
-
+/*
 class Airman : public Enemy{
 private: 
     int e_attackDamage;
@@ -129,3 +129,4 @@ public:
     void Update(Map* map, int r_posX, int r_posY, int screenOffset);
     void Render(Map* map);
 };
+*/
